@@ -1,0 +1,61 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.GoodHabit.MainActivity">
+
+    <PreferenceCategory app:title="通用">
+
+        <ListPreference
+            android:id="@+id/ThemePreference"
+            android:icon="@drawable/ic_palette"
+            app:defaultValue="true"
+            app:entries="@array/theme_entries"
+            app:entryValues="@array/theme_values"
+            app:key="theme"
+            app:title="主题"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:id="@+id/LanguagePreference"
+            android:defaultValue="true"
+            android:entries="@array/language_entries"
+            android:entryValues="@array/language_values"
+            android:icon="@drawable/ic_language"
+            android:key="language"
+            android:title="语言"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="备份与恢复">
+
+        <SwitchPreference
+            android:id="@+id/AutoBackupPreference"
+            android:defaultValue="true"
+            android:icon="@drawable/ic_backup"
+            android:key="auto_backup"
+            android:summaryOff="关闭"
+            android:summaryOn="启用"
+            android:title="自动备份" />
+        <Preference
+            android:id="@+id/BackupLocationPreference"
+            android:icon="@drawable/ic_backup_location"
+            android:summary="/data/document/goodhabit/backup/"
+            app:title="备份路径" />
+        <Preference
+            android:id="@+id/ImportBackupPreference"
+            android:icon="@drawable/ic_import_backup"
+            android:summary="/data/document/goodhabit/backup/backup_20210401.bak"
+            app:title="导入备份"
+            app:key="import_backup"/>
+    </PreferenceCategory>
+    <PreferenceCategory app:title="其它">
+        <Preference
+            android:id="@+id/AboutPreference"
+            app:title="关于"
+            app:key="about">
+            <intent
+                android:targetPackage="com.iceberry.goodhabit"
+                android:targetClass="com.iceberry.goodhabit.AboutActivity"/>
+        </Preference>
+    </PreferenceCategory>
+
+</PreferenceScreen>

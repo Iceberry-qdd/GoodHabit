@@ -1,12 +1,12 @@
 package com.iceberry.goodhabit
 
-import android.R.attr
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
+import android.text.TextUtils
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.MonthView
-
 
 /**
  * author: Iceberry
@@ -16,100 +16,118 @@ import com.haibin.calendarview.MonthView
  *
  */
 class CalendarMonthView(context: Context) : MonthView(context) {
+    private var mRadius: Int = 0
+
+    /**
+     * 自定义魅族标记的文本画笔
+     */
     private val mTextPaint = Paint()
+
+    /**
+     * 24节气画笔
+     */
+    private val mSolarTermTextPaint = Paint()
+
+    /**
+     * 背景圆点
+     */
+    private val mPointPaint = Paint()
+
+    /**
+     * 今天的背景色
+     */
+    private val mCurrentDayPaint = Paint()
+
+    /**
+     * 圆点半径
+     */
+    private var mPointRadius = 0f
+
+    private var mPadding = 0
+
+    private var mCircleRadius = 0f
+
+    /**
+     * 自定义魅族标记的圆形背景
+     */
     private val mSchemeBasicPaint = Paint()
-    var mRadio = Float.NaN
-    var mPadding = Float.NaN
-    var mSchemeBaseLine = Float.NaN
+
+    private var mSchemeBaseLine = 0f
 
     init {
         mTextPaint.apply {
-            textSize = 30f//dipToPx(context, 8f).toFloat()
-            color = 0x000000
+            textSize = dipToPx(context, 8f).toFloat()
+            color = -0x1
             isAntiAlias = true
             isFakeBoldText = true
-            strokeWidth=2f
-            style=Paint.Style.FILL
-            isDither=true
+        }
+        mSolarTermTextPaint.apply {
+            color = -0xb76201
+            isAntiAlias = true
+            textAlign = Paint.Align.CENTER
         }
         mSchemeBasicPaint.apply {
             isAntiAlias = true
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
             isFakeBoldText = true
+            color = Color.WHITE
         }
-        mRadio = dipToPx(context, 7f).toFloat()
-        mPadding = dipToPx(context, 4f).toFloat()
+        mCurrentDayPaint.apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            color = -0x151516
+        }
+        mPointPaint.apply {
+            isAntiAlias = true
+            style = Paint.Style.FILL
+            textAlign = Paint.Align.CENTER
+            color = Color.RED
+        }
+        mCircleRadius = dipToPx(context, 7f).toFloat()
+        mPadding = dipToPx(context, 3f)
+        mPointRadius = dipToPx(context, 2f).toFloat()
         val metrics = mSchemeBasicPaint.fontMetrics
         mSchemeBaseLine =
-            mRadio - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(context, 1f)
+            mCircleRadius - metrics.descent + (metrics.bottom - metrics.top) / 2 + dipToPx(
+                context,
+                1f
+            )
     }
 
-    /**
-     * 绘制选中的日期
-     *
-     * @param canvas    canvas
-     * @param calendar  日历日历calendar
-     * @param x         日历Card x起点坐标
-     * @param y         日历Card y起点坐标
-     * @param hasScheme hasScheme 非标记的日期
-     * @return 是否绘制onDrawScheme，true or false
-     */
+    override fun onPreviewHook() {
+        mSolarTermTextPaint.textSize = mCurMonthLunarTextPaint.textSize
+        mRadius = mItemWidth.coerceAtMost(mItemHeight) / 11 * 5
+    }
+
+    override fun onDraw(canvas: Canvas?) {
+        super.onDraw(canvas)
+    }
+
     override fun onDrawSelected(
         canvas: Canvas,
-        calendar: Calendar,
+        calendar: Calendar?,
         x: Int,
         y: Int,
         hasScheme: Boolean
     ): Boolean {
-        mSelectedPaint.style = Paint.Style.FILL
-        canvas.drawRect(
-            x + mPadding,
-            y + mPadding,
-            x + mItemWidth - mPadding,
-            y + mItemHeight - mPadding,
-            mSelectedPaint
-        )
+        val cx = x + mItemWidth / 2
+        val cy = y + mItemHeight / 2
+        canvas.drawCircle(cx.toFloat(), cy.toFloat(), mRadius.toFloat(), mSelectedPaint)
         return true
     }
 
-    /**
-     * 绘制标记的日期,这里可以是背景色，标记色什么的
-     *
-     * @param canvas   canvas
-     * @param calendar 日历calendar
-     * @param x        日历Card x起点坐标
-     * @param y        日历Card y起点坐标
-     */
-    override fun onDrawScheme(canvas: Canvas, calendar: Calendar, x: Int, y: Int) {
-        mSchemeBasicPaint.color = calendar.schemeColor
-
-        canvas.apply {
-            drawCircle(
-                x + mItemWidth - mPadding - mRadio / 2,
-                y + mPadding + mRadio,
-                mRadio,
-                mSchemeBasicPaint
-            )
-            drawText(
-                calendar.scheme,
-                x + mItemWidth - mPadding - mRadio / 2 - getTextWidth(calendar.scheme) / 2,
-                y + mPadding + mSchemeBaseLine,
-                mTextPaint
-            )
-        }
+    override fun onDrawScheme(canvas: Canvas, calendar: Calendar?, x: Int, y: Int) {
+        val isSelected = isSelected(calendar)
+        mPointPaint.color = if (isSelected) Color.WHITE else Color.GRAY
+        canvas.drawCircle(
+            (x + mItemWidth / 2).toFloat(),
+            (y + mItemHeight - 3 * mPadding).toFloat(),
+            mPointRadius,
+            mPointPaint
+        )
     }
 
-    /**
-     * 绘制日历文本
-     *
-     * @param canvas     canvas
-     * @param calendar   日历calendar
-     * @param x          日历Card x起点坐标
-     * @param y          日历Card y起点坐标
-     * @param hasScheme  是否是标记的日期
-     * @param isSelected 是否选中
-     */
     override fun onDrawText(
         canvas: Canvas,
         calendar: Calendar,
@@ -118,60 +136,109 @@ class CalendarMonthView(context: Context) : MonthView(context) {
         hasScheme: Boolean,
         isSelected: Boolean
     ) {
-        val cx = attr.x + mItemWidth / 2
-        val top = attr.y - mItemHeight / 6
+        val cx = x + mItemWidth / 2
+        val cy = y + mItemHeight / 2
+        val top = y - mItemHeight / 6
+        if (calendar.isCurrentDay && !isSelected) {
+            canvas.drawCircle(cx.toFloat(), cy.toFloat(), mRadius.toFloat(), mCurrentDayPaint)
+        }
+        if (hasScheme) {
+            canvas.drawCircle(
+                x + mItemWidth - mPadding - mCircleRadius / 2,
+                y + mPadding + mCircleRadius,
+                mCircleRadius,
+                mSchemeBasicPaint
+            )
+            mTextPaint.color = calendar.schemeColor
+            canvas.drawText(
+                calendar.scheme,
+                x + mItemWidth - mPadding - mCircleRadius,
+                y + mPadding + mSchemeBaseLine,
+                mTextPaint
+            )
+        }
 
-        val isInRange = isInRange(calendar)
-
+        //当然可以换成其它对应的画笔就不麻烦，
+        if (calendar.isWeekend && calendar.isCurrentMonth) {
+            mCurMonthTextPaint.color = -0xb76201
+            mCurMonthLunarTextPaint.color = -0xb76201
+            mSchemeTextPaint.color = -0xb76201
+            mSchemeLunarTextPaint.color = -0xb76201
+            mOtherMonthLunarTextPaint.color = -0xb76201
+            mOtherMonthTextPaint.color = -0xb76201
+        } else {
+            mCurMonthTextPaint.color = -0xcccccd
+            mCurMonthLunarTextPaint.color = -0x303031
+            mSchemeTextPaint.color = -0xcccccd
+            mSchemeLunarTextPaint.color = -0x303031
+            mOtherMonthTextPaint.color = -0x1e1e1f
+            mOtherMonthLunarTextPaint.color = -0x1e1e1f
+        }
         when {
             isSelected -> {
                 canvas.drawText(
-                    java.lang.String.valueOf(calendar.day), cx.toFloat(),
+                    calendar.day.toString(), cx.toFloat(),
                     mTextBaseLine + top,
                     mSelectTextPaint
                 )
                 canvas.drawText(
                     calendar.lunar,
                     cx.toFloat(),
-                    mTextBaseLine + attr.y + mItemHeight / 10, mSelectedLunarTextPaint
+                    mTextBaseLine + y + mItemHeight / 10,
+                    mSelectedLunarTextPaint
                 )
             }
             hasScheme -> {
                 canvas.drawText(
-                    java.lang.String.valueOf(calendar.day), cx.toFloat(),
+                    calendar.day.toString(), cx.toFloat(),
                     mTextBaseLine + top,
-                    if (calendar.isCurrentMonth && isInRange) mSchemeTextPaint else mOtherMonthTextPaint
+                    if (calendar.isCurrentMonth) mSchemeTextPaint
+                    else mOtherMonthTextPaint
                 )
                 canvas.drawText(
                     calendar.lunar,
                     cx.toFloat(),
-                    mTextBaseLine + attr.y + mItemHeight / 10, mCurMonthLunarTextPaint
+                    mTextBaseLine + y + mItemHeight / 10,
+                    if (!TextUtils.isEmpty(calendar.solarTerm))
+                        mSolarTermTextPaint
+                    else mSchemeLunarTextPaint
                 )
             }
             else -> {
                 canvas.drawText(
-                    java.lang.String.valueOf(calendar.day), cx.toFloat(),
+                    calendar.day.toString(),
+                    cx.toFloat(),
                     mTextBaseLine + top,
-                    if (calendar.isCurrentDay) mCurDayTextPaint else if (calendar.isCurrentMonth && isInRange) mCurMonthTextPaint else mOtherMonthTextPaint
+                    when {
+                        calendar.isCurrentDay -> mCurDayTextPaint
+                        calendar.isCurrentMonth -> mCurMonthTextPaint
+                        else -> mOtherMonthTextPaint
+                    }
                 )
                 canvas.drawText(
-                    calendar.lunar, cx.toFloat(),
-                    mTextBaseLine + attr.y + mItemHeight / 10,
-                    if (calendar.isCurrentDay && isInRange) mCurDayLunarTextPaint else if (calendar.isCurrentMonth) mCurMonthLunarTextPaint else mOtherMonthLunarTextPaint
+                    calendar.lunar,
+                    cx.toFloat(),
+                    mTextBaseLine + y + mItemHeight / 10,
+                    when {
+                        calendar.isCurrentDay -> mCurDayLunarTextPaint
+                        calendar.isCurrentMonth ->
+                            if (!TextUtils.isEmpty(calendar.solarTerm)) mSolarTermTextPaint else mCurMonthLunarTextPaint
+                        else -> mOtherMonthLunarTextPaint
+                    }
                 )
             }
         }
     }
 
-    private fun getTextWidth(text: String): Float {
-        return mTextPaint.measureText(text)
+    /**
+     * dp转px
+     *
+     * @param context context
+     * @param dpValue dp
+     * @return px
+     */
+    private fun dipToPx(context: Context, dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
     }
-
-    companion object {
-        private fun dipToPx(context: Context, dpValue: Float): Int {
-            val scale = context.resources.displayMetrics.density
-            return (dpValue * scale + 0.5f).toInt()
-        }
-    }
-
 }

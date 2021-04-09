@@ -112,27 +112,4 @@
         app:week_start_with="sun"
         app:week_text_color="#000000" />
 
-<!--    <com.haibin.calendarview.CalendarView-->
-<!--        android:id="@+id/calendarView"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="#fff"-->
-<!--        app:current_month_lunar_text_color="#000000"-->
-<!--        app:current_month_text_color="#000000"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:max_year="2100"-->
-<!--        app:min_year="2004"-->
-<!--        app:month_view="com.iceberry.goodhabit.CalendarMonthView"-->
-<!--        app:other_month_lunar_text_color="#000000"-->
-<!--        app:other_month_text_color="#000000"-->
-<!--        app:scheme_text="假"-->
-<!--        app:scheme_text_color="#333"-->
-<!--        app:scheme_theme_color="#128c4b"-->
-<!--        app:selected_lunar_text_color="#FF0000"-->
-<!--        app:selected_text_color="#333"-->
-<!--        app:selected_theme_color="@color/purple_500"-->
-<!--        app:calendar_match_parent="true" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

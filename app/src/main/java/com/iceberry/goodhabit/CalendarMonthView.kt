@@ -57,32 +57,39 @@ class CalendarMonthView(context: Context) : MonthView(context) {
     init {
         mTextPaint.apply {
             textSize = dipToPx(context, 8f).toFloat()
-            color = -0x1
+            //color = -0x1
             isAntiAlias = true
             isFakeBoldText = true
         }
+        //二十四节气画笔
         mSolarTermTextPaint.apply {
-            color = -0xb76201
+            //color = -0xb76201
+            color=Color.GRAY//Color.rgb(98,0,238)
             isAntiAlias = true
             textAlign = Paint.Align.CENTER
         }
+        //标记画笔
         mSchemeBasicPaint.apply {
             isAntiAlias = true
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
             isFakeBoldText = true
-            color = Color.WHITE
+            color = Color.rgb(98,0,238)
         }
+        //当前日画笔
         mCurrentDayPaint.apply {
             isAntiAlias = true
-            style = Paint.Style.FILL
-            color = -0x151516
+            style = Paint.Style.STROKE
+            strokeWidth=4f
+            //color = -0x151516
+            color = Color.rgb(98,0,238)
         }
         mPointPaint.apply {
             isAntiAlias = true
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
-            color = Color.RED
+            //color = Color.RED
+            //color = Color.rgb(98,0,238)
         }
         mCircleRadius = dipToPx(context, 7f).toFloat()
         mPadding = dipToPx(context, 3f)
@@ -158,22 +165,22 @@ class CalendarMonthView(context: Context) : MonthView(context) {
             )
         }
 
-        //当然可以换成其它对应的画笔就不麻烦，
-        if (calendar.isWeekend && calendar.isCurrentMonth) {
-            mCurMonthTextPaint.color = -0xb76201
-            mCurMonthLunarTextPaint.color = -0xb76201
-            mSchemeTextPaint.color = -0xb76201
-            mSchemeLunarTextPaint.color = -0xb76201
-            mOtherMonthLunarTextPaint.color = -0xb76201
-            mOtherMonthTextPaint.color = -0xb76201
-        } else {
-            mCurMonthTextPaint.color = -0xcccccd
-            mCurMonthLunarTextPaint.color = -0x303031
-            mSchemeTextPaint.color = -0xcccccd
-            mSchemeLunarTextPaint.color = -0x303031
-            mOtherMonthTextPaint.color = -0x1e1e1f
-            mOtherMonthLunarTextPaint.color = -0x1e1e1f
-        }
+//        //当然可以换成其它对应的画笔就不麻烦，
+//        if (calendar.isWeekend && calendar.isCurrentMonth) {
+//            mCurMonthTextPaint.color = Color.BLACK//Color.rgb(98,0,238)//-0xb76201
+//            mCurMonthLunarTextPaint.color = Color.GRAY//Color.rgb(98,0,238)//-0xb76201
+//            mSchemeTextPaint.color = -0xb76201
+//            mSchemeLunarTextPaint.color = -0xb76201
+//            mOtherMonthLunarTextPaint.color = -0xb76201
+//            mOtherMonthTextPaint.color = -0xb76201
+//        } else {
+//            mCurMonthTextPaint.color = -0xcccccd
+//            mCurMonthLunarTextPaint.color = -0x303031
+//            mSchemeTextPaint.color = -0xcccccd
+//            mSchemeLunarTextPaint.color = -0x303031
+//            mOtherMonthTextPaint.color = -0x1e1e1f
+//            mOtherMonthLunarTextPaint.color = -0x1e1e1f
+//        }
         when {
             isSelected -> {
                 canvas.drawText(

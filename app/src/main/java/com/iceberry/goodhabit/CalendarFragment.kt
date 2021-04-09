@@ -1,20 +1,19 @@
 package com.iceberry.goodhabit
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarLayout
 import com.haibin.calendarview.CalendarView
 import com.iceberry.goodhabit.databinding.FragmentCalendarBinding
-
-
-//import android.widget.CalendarView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,9 +43,6 @@ class CalenderFragment : Fragment(),
     lateinit var mCalendarView: CalendarView
     lateinit var mRelativeTool: ConstraintLayout
     private var mYear = 0
-    //lateinit var mCalendarLayout: CalendarLayout
-    //var mRecyclerView: GroupRecyclerView? = null
-    //private lateinit var calendarView: CalendarView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,19 +55,19 @@ class CalenderFragment : Fragment(),
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding= FragmentCalendarBinding.inflate(inflater,container,false)
         val view= binding.root
         //inflater.inflate(R.layout.fragment_calendar, container, false)
         //setStatusBarDarkMode();
-        mTextMonthDay =binding.tvMonthDay //view.findViewById(R.id.tv_month_day)
-        mTextYear =binding.tvYear //view.findViewById(R.id.tv_year)
-        mTextLunar = binding.tvLunar //view.findViewById(R.id.tv_lunar)
-        mRelativeTool =binding.rlTool //view.findViewById(R.id.rl_tool)
-        mCalendarView =binding.calendarView  //view.findViewById(R.id.calendarView)
-        //mCalendarLayout=view.findViewById(R.id.)
-        mTextCurrentDay =binding.tvCurrentDay  //view.findViewById(R.id.tv_current_day)
+        mTextMonthDay =binding.tvMonthDay
+        mTextYear =binding.tvYear
+        mTextLunar = binding.tvLunar
+        mRelativeTool =binding.rlTool
+        mCalendarView =binding.calendarView
+        mTextCurrentDay =binding.tvCurrentDay
+
         mTextMonthDay.setOnClickListener {
             mCalendarView.showYearSelectLayout(mYear)
             mTextLunar.visibility=View.GONE
@@ -90,6 +86,7 @@ class CalenderFragment : Fragment(),
         mTextMonthDay.text="${mCalendarView.curMonth}月${mCalendarView.curDay}日"
         mTextLunar.text="今日"
         mTextCurrentDay.text=mCalendarView.curDay.toString()
+
         //calendarView=view.findViewById(R.id.calendarView)
         return view
     }
@@ -147,13 +144,34 @@ class CalenderFragment : Fragment(),
      * @param calendar calendar
      * @param isClick  isClick
      */
-    override fun onCalendarSelect(calendar: Calendar?, isClick: Boolean) {
+    override fun onCalendarSelect(calendar: Calendar, isClick: Boolean) {
+        mTextLunar.visibility=View.VISIBLE
+        mTextYear.visibility=View.VISIBLE
+        mTextMonthDay.text="${calendar.month}月${calendar.day}日"
+        mTextYear.text=calendar.year.toString()
+        mTextLunar.text=calendar.lunar.toString()
+        mYear=calendar.year
+
+        if (calendar.isCurrentDay){
+            Toast.makeText(requireContext(),"今天",Toast.LENGTH_LONG).show()
+        }else if (calendar.day>mCalendarView.curDay){
+            Toast.makeText(requireContext(),"超过范围",Toast.LENGTH_LONG).show()
+        }
+        if (!calendar.hasScheme()){
+            calendar.apply {
+                schemeColor=Color.WHITE
+                scheme="签"
+                addScheme(Calendar.Scheme())
+                //addScheme(0xFF008800, "假")
+            }
+        }
 
     }
 
     override fun onYearChange(year: Int) {
-
+        mTextMonthDay.text=year.toString()
     }
+
 
     /**
      * Called when a view has been clicked.
@@ -161,7 +179,6 @@ class CalenderFragment : Fragment(),
      * @param v The view that was clicked.
      */
     override fun onClick(v: View?) {
-
     }
 
     override fun onDestroyView() {

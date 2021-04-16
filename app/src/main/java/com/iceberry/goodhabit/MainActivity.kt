@@ -1,10 +1,6 @@
 package com.iceberry.goodhabit
 
-import android.app.Activity
-import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -19,11 +15,11 @@ class MainActivity : BaseActivity() {
         //setStatusBarFontColor(this,true)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        val navController = Navigation.findNavController(this,R.id.fragment)
+        val navController = Navigation.findNavController(this, R.id.fragment)
         val configuration = AppBarConfiguration.Builder(bottomNavigationView.menu).build()
-        NavigationUI.setupActionBarWithNavController(this,navController, configuration)
+        NavigationUI.setupActionBarWithNavController(this, navController, configuration)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
-        
+
     }
 
 

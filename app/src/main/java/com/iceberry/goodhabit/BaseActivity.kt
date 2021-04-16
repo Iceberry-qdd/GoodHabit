@@ -17,8 +17,8 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStatusBarFontColor(this,true)
-        window.statusBarColor= Color.WHITE
+        setStatusBarFontColor(this, true)
+        window.statusBarColor = Color.WHITE
         supportActionBar?.elevation = 0f
     }
 

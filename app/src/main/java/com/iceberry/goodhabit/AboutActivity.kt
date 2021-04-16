@@ -11,7 +11,7 @@ class AboutActivity : BaseActivity() {
 //        val color=Color.parseColor("#ffffff")
 //        val drawable=ColorDrawable(color)
         supportActionBar?.apply {
-            title="关于"
+            title = "关于"
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }

@@ -2,7 +2,6 @@ package com.iceberry.goodhabit
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -24,11 +23,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
         Log.d("TAG", "语言：$language")
 
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-            type="text/plain"
+            type = "text/plain"
             addCategory(Intent.CATEGORY_OPENABLE)
         }
 
-        importBackupPreference?.intent =intent
+        importBackupPreference?.intent = intent
 
 //        val aboutPreference=findPreference<Preference>("about")
 //        aboutPreference?.setOnPreferenceClickListener {

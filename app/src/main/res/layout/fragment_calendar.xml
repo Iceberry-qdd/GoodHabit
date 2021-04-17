@@ -5,7 +5,7 @@
     android:id="@+id/ConstrainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalenderFragment" >
+    tools:context=".fragment.CalenderFragment" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rl_tool"
@@ -108,7 +108,7 @@
         app:layout_constraintTop_toBottomOf="@+id/rl_tool"
         app:max_year="2100"
         app:min_year="2000"
-        app:month_view="com.iceberry.goodhabit.CalendarMonthView"
+        app:month_view="com.iceberry.goodhabit.view.CalendarMonthView"
         app:month_view_show_mode="mode_fix"
         app:other_month_lunar_text_color="#000000"
         app:other_month_text_color="#000000"

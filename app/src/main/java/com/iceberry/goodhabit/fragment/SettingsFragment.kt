@@ -1,4 +1,4 @@
-package com.iceberry.goodhabit
+package com.iceberry.goodhabit.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
+import com.iceberry.goodhabit.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
 

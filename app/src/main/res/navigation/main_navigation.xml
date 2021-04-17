@@ -7,16 +7,16 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.iceberry.goodhabit.HomeFragment"
+        android:name="com.iceberry.goodhabit.fragment.HomeFragment"
         android:label="@string/bottom_menu_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.iceberry.goodhabit.SettingsFragment"
+        android:name="com.iceberry.goodhabit.fragment.SettingsFragment"
         android:label="@string/bottom_menu_settings" />
     <fragment
         android:id="@+id/calendarFragment"
-        android:name="com.iceberry.goodhabit.CalenderFragment"
+        android:name="com.iceberry.goodhabit.fragment.CalenderFragment"
         android:label="@string/bottom_menu_calendar"
         tools:layout="@layout/fragment_calendar" />
 </navigation>

@@ -1,7 +1,6 @@
-package com.iceberry.goodhabit
+package com.iceberry.goodhabit.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import androidx.fragment.app.viewModels
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 import com.iceberry.goodhabit.databinding.FragmentCalendarBinding
+import com.iceberry.goodhabit.viewModel.CalendarFragmentViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -133,14 +133,14 @@ class CalenderFragment : Fragment(),
         mTextLunar.text = calendar.lunar.toString()
         mYear = calendar.year
 
-        Log.d("TAG", "${calendar.timeInMillis}")
+        //Log.d("TAG", "${calendar.timeInMillis}")
         if (calendar.timeInMillis > System.currentTimeMillis()) {
             Toast.makeText(requireContext(), "超过范围", Toast.LENGTH_LONG).show()
             return
         }
         if (!calendar.hasScheme() && isClick) {
-            viewModel.addScheme(calendar)
-            mCalendarView.setSchemeDate(viewModel.getScheme())
+            viewModel.addSchemeDate(calendar)
+            mCalendarView.setSchemeDate(viewModel.getSchemeDates())
         }
 
     }
@@ -159,6 +159,8 @@ class CalenderFragment : Fragment(),
     }
 
     override fun onDestroyView() {
+        viewModel.saveSchemeDates()
+
         super.onDestroyView()
         _viewBinding = null
     }

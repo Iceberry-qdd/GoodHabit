@@ -1,10 +1,11 @@
-package com.iceberry.goodhabit
+package com.iceberry.goodhabit.activity
 
 import android.os.Bundle
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.iceberry.goodhabit.R
 
 class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

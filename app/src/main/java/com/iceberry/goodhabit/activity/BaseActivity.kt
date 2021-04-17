@@ -1,4 +1,4 @@
-package com.iceberry.goodhabit
+package com.iceberry.goodhabit.activity
 
 import android.app.Activity
 import android.graphics.Color

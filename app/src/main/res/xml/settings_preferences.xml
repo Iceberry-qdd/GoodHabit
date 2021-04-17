@@ -1,6 +1,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/Theme.GoodHabit.MainActivity">
+    android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar">
 
     <PreferenceCategory app:title="通用">
 

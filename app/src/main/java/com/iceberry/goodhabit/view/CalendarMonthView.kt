@@ -1,4 +1,4 @@
-package com.iceberry.goodhabit
+package com.iceberry.goodhabit.view
 
 import android.content.Context
 import android.graphics.Canvas

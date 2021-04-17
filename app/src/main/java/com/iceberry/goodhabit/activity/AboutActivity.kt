@@ -1,7 +1,8 @@
-package com.iceberry.goodhabit
+package com.iceberry.goodhabit.activity
 
 import android.os.Bundle
 import android.view.MenuItem
+import com.iceberry.goodhabit.R
 
 class AboutActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

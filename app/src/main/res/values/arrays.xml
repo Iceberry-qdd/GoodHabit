@@ -21,8 +21,8 @@
 
     <string-array name="language_values">
         <item>default</item>
-        <item>Zh-CN</item>
-        <item>Zh-TW</item>
-        <item>En-US</item>
+        <item>Zh-Simplified</item>
+        <item>Zh-Traditional</item>
+        <item>En-Global</item>
     </string-array>
 </resources>

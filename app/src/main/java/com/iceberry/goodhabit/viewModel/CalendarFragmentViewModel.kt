@@ -7,46 +7,39 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import com.haibin.calendarview.Calendar
 import com.iceberry.goodhabit.SchemeData
-import java.io.FileInputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
 class CalendarFragmentViewModel(application: Application) : AndroidViewModel(application) {
     private val mSchemeDates: MutableMap<String, Calendar> by lazy { mutableMapOf() }
+    private val context = getApplication<Application>().applicationContext
 
     init {
-
         loadSchemeDates()
     }
 
     private fun loadSchemeDates() {
         try {
-            mSchemeDates.putAll(ObjectInputStream(FileInputStream("data.bin")).readObject() as MutableMap<String, Calendar>)
-
+            val openFileInput = context.openFileInput("data.bin")
+            val schemeData = ObjectInputStream(openFileInput).readObject() as SchemeData
+            mSchemeDates.putAll(schemeData.mSchemeDates)
+            Log.d("TAG", "read!")
         } catch (e: IOException) {
             print(e)
         }
     }
 
-    fun saveSchemeDates() {
+    private fun saveSchemeDates() {
         val schemeData = SchemeData(1, System.currentTimeMillis(), mSchemeDates)
         try {
-            val openFileOutput = getApplication<Application>().applicationContext.openFileOutput(
-                "data.bin",
-                Context.MODE_PRIVATE
-            )
+            val openFileOutput = context.openFileOutput("data.bin", Context.MODE_PRIVATE)
             ObjectOutputStream(openFileOutput).apply {
                 writeObject(schemeData)
                 flush()
                 close()
                 Log.d("TAG", "saved!")
             }
-//            ObjectOutputStream(FileOutputStream("data.bin", true)).apply {
-//                writeObject(mSchemeDates)
-//                flush()
-//                close()
-//                Log.d("TAG", "saved!")
         } catch (e: IOException) {
             print(e)
         }
@@ -63,6 +56,18 @@ class CalendarFragmentViewModel(application: Application) : AndroidViewModel(app
 
     fun getSchemeDates(): MutableMap<String, Calendar> {
         return mSchemeDates
+    }
+
+    /**
+     * This method will be called when this ViewModel is no longer used and will be destroyed.
+     *
+     *
+     * It is useful when ViewModel observes some data and you need to clear this subscription to
+     * prevent a leak of this ViewModel.
+     */
+    override fun onCleared() {
+        super.onCleared()
+        saveSchemeDates()
     }
 }
 

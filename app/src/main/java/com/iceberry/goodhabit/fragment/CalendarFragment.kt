@@ -100,7 +100,7 @@ class CalenderFragment : Fragment(),
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        mCalendarView.setSchemeDate(viewModel.getSchemeDates())
         //viewModel = ViewModelProvider(this).get(CalendarFragmentModel::class.java)
 
         //val mSchemeDates= mutableMapOf<String,Calendar>(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
@@ -159,8 +159,6 @@ class CalenderFragment : Fragment(),
     }
 
     override fun onDestroyView() {
-        viewModel.saveSchemeDates()
-
         super.onDestroyView()
         _viewBinding = null
     }

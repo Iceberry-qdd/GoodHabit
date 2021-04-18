@@ -25,6 +25,22 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="日历">
+        <ListPreference
+            android:id="@+id/BeginDayPreference"
+            android:defaultValue="1"
+            android:entries="@array/calendar_begin_day_entries"
+            android:entryValues="@array/calendar_begin_day_values"
+            android:key="begin_day"
+            android:title="每周起始日"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="allow_reissue"
+            android:summaryOff="关闭"
+            android:summaryOn="启用"
+            android:title="允许补签" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="备份与恢复">
 
         <SwitchPreference
@@ -44,17 +60,25 @@
             android:id="@+id/ImportBackupPreference"
             android:icon="@drawable/ic_import_backup"
             android:summary="/data/document/goodhabit/backup/backup_20210401.bak"
-            app:title="导入备份"
-            app:key="import_backup"/>
+            app:key="import_backup"
+            app:title="导入备份" />
     </PreferenceCategory>
     <PreferenceCategory app:title="其它">
         <Preference
             android:id="@+id/AboutPreference"
-            app:title="关于"
-            app:key="about">
+            app:key="about"
+            app:title="关于">
             <intent
-                android:targetPackage="com.iceberry.goodhabit"
-                android:targetClass="com.iceberry.goodhabit.AboutActivity"/>
+                android:targetClass="com.iceberry.goodhabit.activity.AboutActivity"
+                android:targetPackage="com.iceberry.goodhabit" />
+        </Preference>
+        <Preference
+            android:id="@+id/HelpPreference"
+            app:key="feedback"
+            app:title="帮助与反馈">
+            <intent
+                android:targetClass="com.iceberry.goodhabit.AboutActivity"
+                android:targetPackage="com.iceberry.goodhabit" />
         </Preference>
     </PreferenceCategory>
 

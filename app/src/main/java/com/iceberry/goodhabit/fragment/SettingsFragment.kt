@@ -9,6 +9,10 @@ import androidx.preference.PreferenceManager
 import com.iceberry.goodhabit.R
 
 class SettingsFragment : PreferenceFragmentCompat() {
+//    val listener: SharedPreferences.OnSharedPreferenceChangeListener =
+//        SharedPreferences.OnSharedPreferenceChangeListener {
+//
+//        }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_preferences, rootKey)
@@ -19,9 +23,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val language = sharedPreferences.getString("language", "default")
         val importBackupPreference = findPreference<Preference>("import_backup")
 
-        Log.d("TAG", "自动备份：$autoBackup")
-        Log.d("TAG", "主题：$theme")
-        Log.d("TAG", "语言：$language")
+        //listener.onSharedPreferenceChanged(sharedPreferences,"theme")
+
+        sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
+            when (key) {
+                "theme" -> {
+                    Log.d("TAG", "主题：$theme")
+                }
+                "language" -> {
+                    Log.d("TAG", "语言：$language")
+                }
+                else -> {
+                    Log.d("TAG", "自动备份：$autoBackup")
+                }
+            }
+        }
+
+//        Log.d("TAG", "自动备份：$autoBackup")
+//        Log.d("TAG", "主题：$theme")
+//        Log.d("TAG", "语言：$language")
 
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "text/plain"
@@ -41,4 +61,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
 //            true
 //        }
     }
+
+//    override fun onResume() {
+//        super.onResume()
+//        preferenceManager.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+//    }
+//
+//    override fun onPause() {
+//        super.onPause()
+//        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+//    }
 }

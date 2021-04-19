@@ -12,7 +12,8 @@ import androidx.fragment.app.viewModels
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
 import com.iceberry.goodhabit.databinding.FragmentCalendarBinding
-import com.iceberry.goodhabit.viewModel.CalendarFragmentViewModel
+import com.iceberry.goodhabit.viewModel.FragmentViewModel
+import com.iceberry.goodhabit.viewModel.SettingViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -40,7 +41,8 @@ class CalenderFragment : Fragment(),
     lateinit var mRelativeTool: ConstraintLayout
     private var mYear = 0
 
-    private val viewModel: CalendarFragmentViewModel by viewModels()
+    private val fragmentViewModel: FragmentViewModel by viewModels()
+    private val settingViewModel: SettingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +50,34 @@ class CalenderFragment : Fragment(),
     ): View {
         // Inflate the layout for this fragment
         _viewBinding = FragmentCalendarBinding.inflate(inflater, container, false)
-        val view = viewBinding.root
+
+        return viewBinding.root
+    }
+
+    /**
+     * Called when the fragment's activity has been created and this
+     * fragment's view hierarchy instantiated.  It can be used to do final
+     * initialization once these pieces are in place, such as retrieving
+     * views or restoring state.  It is also useful for fragments that use
+     * [.setRetainInstance] to retain their instance,
+     * as this callback tells the fragment when it is fully associated with
+     * the new activity instance.  This is called after [.onCreateView]
+     * and before [.onViewStateRestored].
+     *
+     * @param savedInstanceState If the fragment is being re-created from
+     * a previous saved state, this is the state.
+     */
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        //viewModel = ViewModelProvider(this).get(CalendarFragmentModel::class.java)
+
+        //val mSchemeDates= mutableMapOf<String,Calendar>(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
+        //mSchemeDates.plus(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
+        //mSchemeDates[getSchemeCalendar(2021,3,7,"签").toString()] = getSchemeCalendar(2021,3,7,"签")
+        //mCalendarView.setSchemeDate(mSchemeDates)
+        //viewModel
+
         //context.obtainStyledAttributes(R.styleable.CalendarView_max_year)
         //val dataBinding:FragmentCalendarBinding=DataBindingUtil.setContentView( requireActivity(),R.layout.fragment_calendar)
         //viewBinding.currentYear=java.util.Calendar.YEAR.toString()
@@ -60,6 +89,7 @@ class CalenderFragment : Fragment(),
         mRelativeTool = viewBinding.rlTool
         mCalendarView = viewBinding.calendarView
         //mTextCurrentDay =viewBinding.tvCurrentDay
+        mCalendarView.setSchemeDate(fragmentViewModel.getSchemeDates())
 
         mTextMonthDay.setOnClickListener {
             mCalendarView.showYearSelectLayout(mYear)
@@ -80,34 +110,21 @@ class CalenderFragment : Fragment(),
         mTextLunar.text = "今日"
         //mTextCurrentDay.setOnClickListener { mCalendarView.scrollToCurrent() }
         //mTextCurrentDay.text=mCalendarView.curDay.toString()
-
         //calendarView=view.findViewById(R.id.calendarView)
-        return view
-    }
 
-    /**
-     * Called when the fragment's activity has been created and this
-     * fragment's view hierarchy instantiated.  It can be used to do final
-     * initialization once these pieces are in place, such as retrieving
-     * views or restoring state.  It is also useful for fragments that use
-     * [.setRetainInstance] to retain their instance,
-     * as this callback tells the fragment when it is fully associated with
-     * the new activity instance.  This is called after [.onCreateView]
-     * and before [.onViewStateRestored].
-     *
-     * @param savedInstanceState If the fragment is being re-created from
-     * a previous saved state, this is the state.
-     */
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        mCalendarView.setSchemeDate(viewModel.getSchemeDates())
-        //viewModel = ViewModelProvider(this).get(CalendarFragmentModel::class.java)
-
-        //val mSchemeDates= mutableMapOf<String,Calendar>(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
-        //mSchemeDates.plus(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
-        //mSchemeDates[getSchemeCalendar(2021,3,7,"签").toString()] = getSchemeCalendar(2021,3,7,"签")
-        //mCalendarView.setSchemeDate(mSchemeDates)
-        //viewModel
+        settingViewModel.weekStartDay.observe(viewLifecycleOwner, {
+            when (it) {
+                "MON" -> {
+                    mCalendarView.setWeekStarWithMon()
+                }
+                "SAT" -> {
+                    mCalendarView.setWeekStarWithSat()
+                }
+                "SUN" -> {
+                    mCalendarView.setWeekStarWithSun()
+                }
+            }
+        })
     }
 
     /**
@@ -139,8 +156,8 @@ class CalenderFragment : Fragment(),
             return
         }
         if (!calendar.hasScheme() && isClick) {
-            viewModel.addSchemeDate(calendar)
-            mCalendarView.setSchemeDate(viewModel.getSchemeDates())
+            fragmentViewModel.addSchemeDate(calendar)
+            mCalendarView.setSchemeDate(fragmentViewModel.getSchemeDates())
         }
 
     }

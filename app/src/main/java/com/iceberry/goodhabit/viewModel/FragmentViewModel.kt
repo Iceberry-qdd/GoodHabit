@@ -5,18 +5,26 @@ import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.haibin.calendarview.Calendar
 import com.iceberry.goodhabit.SchemeData
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 
-class CalendarFragmentViewModel(application: Application) : AndroidViewModel(application) {
+class FragmentViewModel(application: Application) : AndroidViewModel(application) {
     private val mSchemeDates: MutableMap<String, Calendar> by lazy { mutableMapOf() }
     private val context = getApplication<Application>().applicationContext
 
+    //    val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+//    val weekStartDay = MutableLiveData<String>()
+    val isCurSignIn = MutableLiveData<Boolean>()
+//    val theme=MutableLiveData<String>()
+
     init {
         loadSchemeDates()
+//        theme.value=sharedPreferences.getString("theme","default")
+//        weekStartDay.value = sharedPreferences.getString("week_start_day", "SUN")
     }
 
     private fun loadSchemeDates() {
@@ -50,8 +58,8 @@ class CalendarFragmentViewModel(application: Application) : AndroidViewModel(app
             calendar.year,
             calendar.month,
             calendar.day,
-            "签"
-        ).toString()] = getSchemeCalendar(calendar.year, calendar.month, calendar.day, "签")
+            "戒"
+        ).toString()] = getSchemeCalendar(calendar.year, calendar.month, calendar.day, "戒")
     }
 
     fun getSchemeDates(): MutableMap<String, Calendar> {
@@ -69,14 +77,14 @@ class CalendarFragmentViewModel(application: Application) : AndroidViewModel(app
         super.onCleared()
         saveSchemeDates()
     }
-}
 
-private fun getSchemeCalendar(year: Int, month: Int, day: Int, text: String): Calendar {
-    return Calendar().apply {
-        this.year = year
-        this.month = month
-        this.day = day
-        scheme = text
-        schemeColor = Color.WHITE
+    private fun getSchemeCalendar(year: Int, month: Int, day: Int, text: String): Calendar {
+        return Calendar().apply {
+            this.year = year
+            this.month = month
+            this.day = day
+            scheme = text
+            schemeColor = Color.WHITE
+        }
     }
 }

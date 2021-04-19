@@ -1,13 +1,13 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar">
+    android:theme="@style/ThemeOverlay.AppCompat.DayNight">
 
     <PreferenceCategory app:title="通用">
 
         <ListPreference
             android:id="@+id/ThemePreference"
             android:icon="@drawable/ic_palette"
-            app:defaultValue="true"
+            app:defaultValue="default"
             app:entries="@array/theme_entries"
             app:entryValues="@array/theme_values"
             app:key="theme"
@@ -15,7 +15,7 @@
             app:useSimpleSummaryProvider="true" />
         <ListPreference
             android:id="@+id/LanguagePreference"
-            android:defaultValue="true"
+            android:defaultValue="default"
             android:entries="@array/language_entries"
             android:entryValues="@array/language_values"
             android:icon="@drawable/ic_language"
@@ -28,10 +28,10 @@
     <PreferenceCategory android:title="日历">
         <ListPreference
             android:id="@+id/BeginDayPreference"
-            android:defaultValue="1"
-            android:entries="@array/calendar_begin_day_entries"
-            android:entryValues="@array/calendar_begin_day_values"
-            android:key="begin_day"
+            android:defaultValue="SUN"
+            android:entries="@array/week_start_day_entries"
+            android:entryValues="@array/week_start_day_values"
+            android:key="week_start_day"
             android:title="每周起始日"
             app:useSimpleSummaryProvider="true" />
         <SwitchPreference

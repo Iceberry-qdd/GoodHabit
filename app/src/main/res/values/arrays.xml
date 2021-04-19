@@ -26,13 +26,13 @@
         <item>En-Global</item>
     </string-array>
 
-    <string-array name="calendar_begin_day_entries">
+    <string-array name="week_start_day_entries">
         <item>周一</item>
         <item>周六</item>
         <item>周日</item>
     </string-array>
 
-    <string-array name="calendar_begin_day_values">
+    <string-array name="week_start_day_values">
         <item>MON</item>
         <item>SAT</item>
         <item>SUN</item>

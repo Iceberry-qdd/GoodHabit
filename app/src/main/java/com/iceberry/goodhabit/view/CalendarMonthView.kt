@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.text.TextUtils
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.MonthView
+import com.iceberry.goodhabit.R
 
 /**
  * author: Iceberry
@@ -74,15 +75,17 @@ class CalendarMonthView(context: Context) : MonthView(context) {
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
             isFakeBoldText = true
-            color = Color.rgb(98, 0, 238)
+            //color = Color.rgb(98, 0, 238)
+            color = resources.getColor(R.color.view_primary_color)
         }
         //当前日画笔
         mCurrentDayPaint.apply {
             isAntiAlias = true
             style = Paint.Style.STROKE
-            strokeWidth = 4f
+            strokeWidth = 2f
             //color = -0x151516
-            color = Color.rgb(98, 0, 238)
+            //color = Color.rgb(98, 0, 238)
+            color = resources.getColor(R.color.view_primary_color)
         }
         mPointPaint.apply {
             isAntiAlias = true
@@ -126,7 +129,7 @@ class CalendarMonthView(context: Context) : MonthView(context) {
 
     override fun onDrawScheme(canvas: Canvas, calendar: Calendar?, x: Int, y: Int) {
         val isSelected = isSelected(calendar)
-        mPointPaint.color = if (isSelected) Color.WHITE else Color.GRAY
+        mPointPaint.color = /*if (isSelected) Color.WHITE else*/ Color.GRAY
         canvas.drawCircle(
             (x + mItemWidth / 2).toFloat(),
             (y + mItemHeight - 3 * mPadding).toFloat(),
@@ -159,27 +162,31 @@ class CalendarMonthView(context: Context) : MonthView(context) {
             mTextPaint.color = calendar.schemeColor
             canvas.drawText(
                 calendar.scheme,
-                x + mItemWidth - mPadding - mCircleRadius,
-                y + mPadding + mSchemeBaseLine,
+                x + mItemWidth - mPadding - mCircleRadius - 1f,
+                y + mPadding + mSchemeBaseLine - 1f,
                 mTextPaint
             )
         }
 
         //当然可以换成其它对应的画笔就不麻烦，
-        if (calendar.isWeekend && calendar.isCurrentMonth) {
-            mCurMonthTextPaint.color = Color.BLACK//Color.rgb(98,0,238)//-0xb76201
+        if (/*calendar.isWeekend && */calendar.isCurrentMonth) {
+            mCurMonthTextPaint.color =
+                resources.getColor(R.color.view_text)//Color.rgb(98,0,238)//-0xb76201
             mCurMonthLunarTextPaint.color = Color.GRAY//Color.rgb(98,0,238)//-0xb76201
-            mSchemeTextPaint.color = Color.BLACK//-0xb76201
+            mSchemeTextPaint.color = resources.getColor(R.color.view_text)//-0xb76201
             mSchemeLunarTextPaint.color = Color.GRAY //-0xb76201
-            mOtherMonthLunarTextPaint.color = -0xb76201
-            mOtherMonthTextPaint.color = -0xb76201
+            //mOtherMonthLunarTextPaint.color =Color.parseColor("#e1e1e1")//-0xb76201
+            //mOtherMonthTextPaint.color =Color.parseColor("#e1e1e1") //-0xb76201
         } else {
-            mCurMonthTextPaint.color = -0xcccccd
+            mCurMonthTextPaint.color = resources.getColor(R.color.view_text)//-0xcccccd
             mCurMonthLunarTextPaint.color = Color.GRAY//-0x303031
-            mSchemeTextPaint.color = Color.BLACK//-0xcccccd
+            mSchemeTextPaint.color = resources.getColor(R.color.view_text)//-0xcccccd
             mSchemeLunarTextPaint.color = Color.GRAY//-0x303031
-            mOtherMonthTextPaint.color = -0x1e1e1f
-            mOtherMonthLunarTextPaint.color = -0x1e1e1f
+            //mOtherMonthTextPaint.color =Color.parseColor("#e1e1e1") //-0x1e1e1f
+            //mOtherMonthLunarTextPaint.color =Color.parseColor("#e1e1e1") //-0x1e1e1f
+
+//            mOtherMonthTextPaint=null
+//            mOtherMonthLunarTextPaint=null
         }
         when {
             isSelected -> {
@@ -199,8 +206,7 @@ class CalendarMonthView(context: Context) : MonthView(context) {
                 canvas.drawText(
                     calendar.day.toString(), cx.toFloat(),
                     mTextBaseLine + top,
-                    if (calendar.isCurrentMonth) mSchemeTextPaint
-                    else mOtherMonthTextPaint
+                    if (calendar.isCurrentMonth) mSchemeTextPaint else mOtherMonthTextPaint
                 )
                 canvas.drawText(
                     calendar.lunar,

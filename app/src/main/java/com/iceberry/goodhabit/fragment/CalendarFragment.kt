@@ -88,17 +88,19 @@ class CalenderFragment : Fragment(),
         mTextLunar = viewBinding.tvLunar
         mRelativeTool = viewBinding.rlTool
         mCalendarView = viewBinding.calendarView
+
+        mTextLunar.visibility = View.GONE
+        mTextYear.visibility = View.GONE
         //mTextCurrentDay =viewBinding.tvCurrentDay
         mCalendarView.setSchemeDate(fragmentViewModel.getSchemeDates())
 
         mTextMonthDay.setOnClickListener {
             mCalendarView.showYearSelectLayout(mYear)
-            mTextLunar.visibility = View.GONE
-            mTextYear.visibility = View.GONE
-            mTextMonthDay.text = mYear.toString()
+
+            mTextMonthDay.text = "${mYear.toString()}年"
         }
         viewBinding.flCurrent.setOnClickListener {
-            mCalendarView.scrollToCurrent()
+            mCalendarView.scrollToCurrent(true)
         }
         mCalendarView.apply {
             setOnCalendarSelectListener(this@CalenderFragment)
@@ -106,7 +108,8 @@ class CalenderFragment : Fragment(),
         }
         mTextYear.text = mCalendarView.curYear.toString()
         mYear = mCalendarView.curYear
-        mTextMonthDay.text = "${mCalendarView.curMonth}月${mCalendarView.curDay}日"
+        mTextMonthDay.text =
+            "${mCalendarView.curYear}年${mCalendarView.curMonth}月${mCalendarView.curDay}日"
         mTextLunar.text = "今日"
         //mTextCurrentDay.setOnClickListener { mCalendarView.scrollToCurrent() }
         //mTextCurrentDay.text=mCalendarView.curDay.toString()
@@ -143,23 +146,24 @@ class CalenderFragment : Fragment(),
      * @param isClick  isClick
      */
     override fun onCalendarSelect(calendar: Calendar, isClick: Boolean) {
-        mTextLunar.visibility = View.VISIBLE
-        mTextYear.visibility = View.VISIBLE
-        mTextMonthDay.text = "${calendar.month}月${calendar.day}日"
-        mTextYear.text = calendar.year.toString()
-        mTextLunar.text = calendar.lunar.toString()
-        mYear = calendar.year
+//        mTextLunar.visibility = View.VISIBLE
+//        mTextYear.visibility = View.VISIBLE
+        mTextMonthDay.text = "${calendar.year}年${calendar.month}月${calendar.day}日"
+//        mTextYear.text = calendar.year.toString()
+//        mTextLunar.text = calendar.lunar.toString()
+//        mYear = calendar.year
 
         //Log.d("TAG", "${calendar.timeInMillis}")
-        if (calendar.timeInMillis > System.currentTimeMillis()) {
+
+        if (calendar.timeInMillis > System.currentTimeMillis() && isClick) {
             Toast.makeText(requireContext(), "超过范围", Toast.LENGTH_LONG).show()
             return
         }
         if (!calendar.hasScheme() && isClick) {
             fragmentViewModel.addSchemeDate(calendar)
             mCalendarView.setSchemeDate(fragmentViewModel.getSchemeDates())
+            return
         }
-
     }
 
     override fun onYearChange(year: Int) {

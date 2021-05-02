@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black_weak">#121212</color>
+    <color name="gray_weak">#E1E1E1</color>
+
+    <color name="view_text">#000000</color>
+    <color name="view_primary_color">@color/purple_500</color>
 </resources>

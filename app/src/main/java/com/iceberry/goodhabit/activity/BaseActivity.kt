@@ -18,9 +18,8 @@ import com.iceberry.goodhabit.viewModel.SettingViewModel
  */
 open class BaseActivity : AppCompatActivity() {
     private val viewModel: SettingViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences =
             PreferenceManager.getDefaultSharedPreferences(this /* Activity context */)
         val theme = sharedPreferences.getString("theme", "default")
@@ -41,6 +40,7 @@ open class BaseActivity : AppCompatActivity() {
             }
         }
 
+        super.onCreate(savedInstanceState)
         //setStatusBarFontColor(this, true)
         //window.statusBarColor = Color.rgb(255, 132, 0)
         //supportActionBar?.elevation = 0f

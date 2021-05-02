@@ -77,6 +77,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
 //        }
     }
 
+    /**
+     * Called when a preference in the tree requests to display a dialog. Subclasses should
+     * override this method to display custom dialogs or to handle dialogs for custom preference
+     * classes.
+     *
+     * @param preference The [Preference] object requesting the dialog
+     */
+    override fun onDisplayPreferenceDialog(preference: Preference?) {
+        super.onDisplayPreferenceDialog(preference)
+    }
+
     private fun isAutoBackup() {
         TODO("Not yet implemented")
     }

@@ -9,11 +9,12 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.haibin.calendarview.Calendar
 import com.haibin.calendarview.CalendarView
+import com.iceberry.goodhabit.R
 import com.iceberry.goodhabit.databinding.FragmentCalendarBinding
 import com.iceberry.goodhabit.viewModel.FragmentViewModel
-import com.iceberry.goodhabit.viewModel.SettingViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -41,8 +42,7 @@ class CalenderFragment : Fragment(),
     lateinit var mRelativeTool: ConstraintLayout
     private var mYear = 0
 
-    private val fragmentViewModel: FragmentViewModel by viewModels()
-    private val settingViewModel: SettingViewModel by viewModels()
+    private val viewModel: FragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,19 +70,6 @@ class CalenderFragment : Fragment(),
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //viewModel = ViewModelProvider(this).get(CalendarFragmentModel::class.java)
-
-        //val mSchemeDates= mutableMapOf<String,Calendar>(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
-        //mSchemeDates.plus(Pair(getSchemeCalendar(2021,3,5,"签").toString(),getSchemeCalendar(2021,3,5,"签")))
-        //mSchemeDates[getSchemeCalendar(2021,3,7,"签").toString()] = getSchemeCalendar(2021,3,7,"签")
-        //mCalendarView.setSchemeDate(mSchemeDates)
-        //viewModel
-
-        //context.obtainStyledAttributes(R.styleable.CalendarView_max_year)
-        //val dataBinding:FragmentCalendarBinding=DataBindingUtil.setContentView( requireActivity(),R.layout.fragment_calendar)
-        //viewBinding.currentYear=java.util.Calendar.YEAR.toString()
-        //inflater.inflate(R.layout.fragment_calendar, container, false)
-        //setStatusBarDarkMode();
         mTextMonthDay = viewBinding.tvMonthDay
         mTextYear = viewBinding.tvYear
         mTextLunar = viewBinding.tvLunar
@@ -92,12 +79,12 @@ class CalenderFragment : Fragment(),
         mTextLunar.visibility = View.GONE
         mTextYear.visibility = View.GONE
         //mTextCurrentDay =viewBinding.tvCurrentDay
-        mCalendarView.setSchemeDate(fragmentViewModel.getSchemeDates())
+        mCalendarView.setSchemeDate(viewModel.getSchemeDates())
 
         mTextMonthDay.setOnClickListener {
             mCalendarView.showYearSelectLayout(mYear)
 
-            mTextMonthDay.text = "${mYear.toString()}年"
+            mTextMonthDay.text = "${mYear}年"
         }
         viewBinding.flCurrent.setOnClickListener {
             mCalendarView.scrollToCurrent(true)
@@ -115,7 +102,7 @@ class CalenderFragment : Fragment(),
         //mTextCurrentDay.text=mCalendarView.curDay.toString()
         //calendarView=view.findViewById(R.id.calendarView)
 
-        settingViewModel.weekStartDay.observe(viewLifecycleOwner, {
+        viewModel.weekStartDay.observe(viewLifecycleOwner, {
             when (it) {
                 "MON" -> {
                     mCalendarView.setWeekStarWithMon()
@@ -146,28 +133,28 @@ class CalenderFragment : Fragment(),
      * @param isClick  isClick
      */
     override fun onCalendarSelect(calendar: Calendar, isClick: Boolean) {
-//        mTextLunar.visibility = View.VISIBLE
-//        mTextYear.visibility = View.VISIBLE
         mTextMonthDay.text = "${calendar.year}年${calendar.month}月${calendar.day}日"
-//        mTextYear.text = calendar.year.toString()
-//        mTextLunar.text = calendar.lunar.toString()
-//        mYear = calendar.year
 
-        //Log.d("TAG", "${calendar.timeInMillis}")
-
+        if (viewModel.allowReissue.value == false) return
         if (calendar.timeInMillis > System.currentTimeMillis() && isClick) {
             Toast.makeText(requireContext(), "超过范围", Toast.LENGTH_LONG).show()
             return
         }
         if (!calendar.hasScheme() && isClick) {
-            fragmentViewModel.addSchemeDate(calendar)
-            mCalendarView.setSchemeDate(fragmentViewModel.getSchemeDates())
+            MaterialAlertDialogBuilder(requireContext(), R.style.ThemeOverlay_MaterialComponents_Dialog_Alert)
+                .setTitle("确定补签")
+                .setMessage("您确定要补签吗？")
+                .setNegativeButton("取消"){_,_->}
+                .setPositiveButton("确定"){_,_->
+                    viewModel.addSchemeDate(calendar)
+                    mCalendarView.setSchemeDate(viewModel.getSchemeDates())
+                }.show()
             return
         }
     }
 
     override fun onYearChange(year: Int) {
-        mTextMonthDay.text = year.toString()
+        mTextMonthDay.text = "${year}年"
     }
 
 
@@ -177,6 +164,11 @@ class CalenderFragment : Fragment(),
      * @param v The view that was clicked.
      */
     override fun onClick(v: View?) {
+    }
+
+    override fun onPause() {
+        viewModel.saveSchemeDates()
+        super.onPause()
     }
 
     override fun onDestroyView() {

@@ -3,35 +3,29 @@ package com.iceberry.goodhabit.fragment
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import com.iceberry.goodhabit.R
-import com.iceberry.goodhabit.viewModel.SettingViewModel
+import com.iceberry.goodhabit.viewModel.FragmentViewModel
 
 class SettingsFragment : PreferenceFragmentCompat() {
     private val listener: SharedPreferences.OnSharedPreferenceChangeListener =
         SharedPreferences.OnSharedPreferenceChangeListener { sp, key ->
             when (key) {
                 "theme" -> {
-                    //Log.d("TAG", "更换前主题：$theme")
                     changeAppTheme(sp.getString("theme", "default"))
-                    Log.d("TAG", "更换后主题：${sp.getString("theme", "default")}")
                 }
                 "language" -> {
-                    //Log.d("TAG", "更换前语言：$language")
                     changeAppLanguage(sp.getString("language", "default"))
-                    //Log.d("TAG", "更换前语言：$language")
                 }
                 "week_start_day" -> {
-                    //Log.d("TAG", "自动备份：$autoBackup")
                     changeWeekStartDay(sp.getString("week_start_day", "SUN"))
                 }
                 "allow_reissue" -> {
-                    isAllowReissue()
+                    isAllowReissue(sp.getBoolean("allow_reissue",false))
                 }
                 "auto_backup" -> {
                     isAutoBackup()
@@ -39,24 +33,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
         }
 
-    //        SharedPreferences.OnSharedPreferenceChangeListener {
-//
-//        }
-    private val viewModel: SettingViewModel by viewModels()
+    private val viewModel: FragmentViewModel by viewModels()
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_preferences, rootKey)
-
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.requireContext())
         val autoBackup = sharedPreferences.getBoolean("auto_backup", false)
         val theme = sharedPreferences.getString("theme", "default")
         val language = sharedPreferences.getString("language", "default")
         val importBackupPreference = findPreference<Preference>("import_backup")
-
-        //listener.onSharedPreferenceChanged(sharedPreferences,"theme")
-
-        //sharedPreferences.registerOnSharedPreferenceChangeListener
 
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
             type = "text/plain"
@@ -86,14 +72,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
      */
     override fun onDisplayPreferenceDialog(preference: Preference?) {
         super.onDisplayPreferenceDialog(preference)
+
     }
 
     private fun isAutoBackup() {
         TODO("Not yet implemented")
     }
 
-    private fun isAllowReissue() {
-        TODO("Not yet implemented")
+    private fun isAllowReissue(allowReissue:Boolean) {
+        viewModel.allowReissue.value=allowReissue
     }
 
     private fun changeWeekStartDay(dayOfWeek: String?) {
@@ -111,7 +98,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             }
             "night" -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                //requireActivity().window.statusBarColor = Color.BLACK
             }
             "default" -> {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

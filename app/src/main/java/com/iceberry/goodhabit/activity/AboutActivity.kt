@@ -9,21 +9,11 @@ class AboutActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
-//        val color=Color.parseColor("#ffffff")
-//        val drawable=ColorDrawable(color)
         supportActionBar?.apply {
             title = "关于"
             setHomeButtonEnabled(true)
             setDisplayHomeAsUpEnabled(true)
         }
-
-//        val titleId=Resources.getSystem().getIdentifier("action_bar_title","id","android")
-//        val title=findViewById<TextView>(titleId)
-//        title.setTextColor(Color.parseColor("#000000"))
-        //actionBar?.setBackgroundDrawable(drawable)
-
-        //window.statusBarColor= Color.WHITE
-        //setStatusBarFontColor(this, true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -31,6 +21,5 @@ class AboutActivity : BaseActivity() {
             onBackPressed()
         }
         return true
-        //return super.onOptionsItemSelected(item)
     }
 }

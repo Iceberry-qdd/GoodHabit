@@ -12,8 +12,6 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
-        //window.statusBarColor=Color.WHITE
-        //setStatusBarFontColor(this,true)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         val navController = Navigation.findNavController(this, R.id.fragment)

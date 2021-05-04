@@ -58,14 +58,12 @@ class CalendarMonthView(context: Context) : MonthView(context) {
     init {
         mTextPaint.apply {
             textSize = dipToPx(context, 8f).toFloat()
-            //color = -0x1
             isAntiAlias = true
             isFakeBoldText = true
         }
         //二十四节气画笔
         mSolarTermTextPaint.apply {
-            //color = -0xb76201
-            color = Color.GRAY//Color.rgb(98,0,238)
+            color = Color.GRAY
             isAntiAlias = true
             textAlign = Paint.Align.CENTER
         }
@@ -75,7 +73,6 @@ class CalendarMonthView(context: Context) : MonthView(context) {
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
             isFakeBoldText = true
-            //color = Color.rgb(98, 0, 238)
             color = resources.getColor(R.color.view_primary_color)
         }
         //当前日画笔
@@ -83,16 +80,12 @@ class CalendarMonthView(context: Context) : MonthView(context) {
             isAntiAlias = true
             style = Paint.Style.STROKE
             strokeWidth = 2f
-            //color = -0x151516
-            //color = Color.rgb(98, 0, 238)
             color = resources.getColor(R.color.view_primary_color)
         }
         mPointPaint.apply {
             isAntiAlias = true
             style = Paint.Style.FILL
             textAlign = Paint.Align.CENTER
-            //color = Color.RED
-            //color = Color.rgb(98,0,238)
         }
         mCircleRadius = dipToPx(context, 7f).toFloat()
         mPadding = dipToPx(context, 3f)
@@ -171,22 +164,19 @@ class CalendarMonthView(context: Context) : MonthView(context) {
         //当然可以换成其它对应的画笔就不麻烦，
         if (/*calendar.isWeekend && */calendar.isCurrentMonth) {
             mCurMonthTextPaint.color =
-                resources.getColor(R.color.view_text)//Color.rgb(98,0,238)//-0xb76201
-            mCurMonthLunarTextPaint.color = Color.GRAY//Color.rgb(98,0,238)//-0xb76201
+                resources.getColor(R.color.view_text)//-0xb76201
+            mCurMonthLunarTextPaint.color = Color.GRAY//-0xb76201
             mSchemeTextPaint.color = resources.getColor(R.color.view_text)//-0xb76201
             mSchemeLunarTextPaint.color = Color.GRAY //-0xb76201
-            //mOtherMonthLunarTextPaint.color =Color.parseColor("#e1e1e1")//-0xb76201
-            //mOtherMonthTextPaint.color =Color.parseColor("#e1e1e1") //-0xb76201
+            //mOtherMonthLunarTextPaint.color =//-0xb76201
+            //mOtherMonthTextPaint.color = //-0xb76201
         } else {
             mCurMonthTextPaint.color = resources.getColor(R.color.view_text)//-0xcccccd
             mCurMonthLunarTextPaint.color = Color.GRAY//-0x303031
             mSchemeTextPaint.color = resources.getColor(R.color.view_text)//-0xcccccd
             mSchemeLunarTextPaint.color = Color.GRAY//-0x303031
-            //mOtherMonthTextPaint.color =Color.parseColor("#e1e1e1") //-0x1e1e1f
-            //mOtherMonthLunarTextPaint.color =Color.parseColor("#e1e1e1") //-0x1e1e1f
-
-//            mOtherMonthTextPaint=null
-//            mOtherMonthLunarTextPaint=null
+            //mOtherMonthTextPaint.color =//-0x1e1e1f
+            //mOtherMonthLunarTextPaint.color = //-0x1e1e1f
         }
         when {
             isSelected -> {

@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
-import com.iceberry.goodhabit.viewModel.SettingViewModel
+import com.iceberry.goodhabit.viewModel.FragmentViewModel
 
 /**
  * author: Iceberry
@@ -17,7 +17,6 @@ import com.iceberry.goodhabit.viewModel.SettingViewModel
  *
  */
 open class BaseActivity : AppCompatActivity() {
-    private val viewModel: SettingViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val sharedPreferences =
@@ -41,10 +40,6 @@ open class BaseActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-        //setStatusBarFontColor(this, true)
-        //window.statusBarColor = Color.rgb(255, 132, 0)
-        //supportActionBar?.elevation = 0f
-        //supportActionBar?.hide()
     }
 
 

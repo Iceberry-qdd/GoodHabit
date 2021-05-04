@@ -1,13 +1,13 @@
 package com.iceberry.goodhabit.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.haibin.calendarview.Calendar
 import com.iceberry.goodhabit.R
 import com.iceberry.goodhabit.viewModel.FragmentViewModel
 
@@ -28,6 +28,7 @@ class HomeFragment : Fragment() {
 
     private val viewModel: FragmentViewModel by viewModels()
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,12 +47,32 @@ class HomeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        view?.findViewById<Button>(R.id.signIn)?.setOnClickListener {
-            Log.d("TAG", "${android.icu.util.Calendar.DATE}")
+        val button = view?.findViewById<Button>(R.id.signIn)
+        val currentDay = viewModel.getCurrentDay()
 
-//            viewModel.getSchemeDates().containsKey("")
-//            if (viewModel.)
+        val curCalendar = Calendar().apply {
+            year = currentDay.substring(0, 4).toInt()
+            month = currentDay.substring(5, 6).toInt()
+            day = currentDay.substring(7, 8).toInt()
         }
+
+        button?.setOnClickListener {
+            viewModel.addSchemeDate(curCalendar)
+            viewModel.saveSchemeDates()
+            viewModel.curSignIn.value = true
+        }
+
+        viewModel.curSignIn.observe(viewLifecycleOwner, {
+            button?.isEnabled = !it
+            button?.text = if (it) "已签到" else "签到"
+//            if (it) {
+//                button?.text = "已签到"
+//                button?.isEnabled = false
+//            } else {
+//                button?.text = "签到"
+//                button?.isEnabled = true
+//            }
+        })
 
     }
 
